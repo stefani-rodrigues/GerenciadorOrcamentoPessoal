@@ -1,8 +1,9 @@
 package com.senac.aulaFull.controller;
 
 
-import com.senac.aulaFull.controller.dto.LoginResquestDto;
+import com.senac.aulaFull.dto.LoginResquestDto;
 import com.senac.aulaFull.services.TokenService;
+import com.senac.aulaFull.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,20 @@ public class AuthController {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     @PostMapping("/login")
     @Operation(summary = "Login",description = "Metodo resposavel por efetuar o login do usuario ")
     public ResponseEntity <?> login (@RequestBody LoginResquestDto request){
 
-        var token = tokenService.gerarToken(request.usuario(),request.senha());
+
+        if (!usuarioService.validarSenha(request)){
+            return ResponseEntity.badRequest().body("Usuário ou senha inválido!");
+        }
+
+
+        var token = tokenService.gerarToken(request);
 
         return ResponseEntity.ok(token);
     }
