@@ -30,7 +30,7 @@ public class UsuarioController {
     }
 
     @GetMapping
-    @Operation(summary = "usuarios",description = "Descrição da regra de negocio")
+    @Operation(summary = "usuarios",description = "Método responsável por consultar os usuários")
     public ResponseEntity<?>consultarTodos(){
 
 
