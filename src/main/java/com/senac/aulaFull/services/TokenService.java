@@ -3,7 +3,7 @@ package com.senac.aulaFull.services;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.senac.aulaFull.dto.LoginResquestDto;
+import com.senac.aulaFull.dto.LoginRequestDto;
 import com.senac.aulaFull.model.Token;
 import com.senac.aulaFull.model.Usuario;
 import com.senac.aulaFull.repository.TokenRepository;
@@ -33,7 +33,7 @@ public class TokenService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public String gerarToken (LoginResquestDto loginResquestDto){
+    public String gerarToken (LoginRequestDto loginResquestDto){
         var usuario = usuarioRepository.findByEmail(loginResquestDto.email()).orElse(null);
 
         Algorithm algorithm = Algorithm.HMAC256(secret);
@@ -44,7 +44,6 @@ public class TokenService {
                 .withExpiresAt(this.gerarDataExpiracao())
                 .sign(algorithm);
 
-        tokenRepository.save(new Token(null,token,usuario));
        return token;
     }
 

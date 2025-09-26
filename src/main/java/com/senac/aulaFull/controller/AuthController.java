@@ -1,7 +1,7 @@
 package com.senac.aulaFull.controller;
 
 
-import com.senac.aulaFull.dto.LoginResquestDto;
+import com.senac.aulaFull.dto.LoginRequestDto;
 import com.senac.aulaFull.services.TokenService;
 import com.senac.aulaFull.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,17 +26,16 @@ public class AuthController {
 
     @PostMapping("/login")
     @Operation(summary = "Login",description = "Metodo resposavel por efetuar o login do usuario ")
-    public ResponseEntity <?> login (@RequestBody LoginResquestDto request){
+    public ResponseEntity <?> login (@RequestBody LoginRequestDto request){
+        try{
+            usuarioService.validarSenha(request);
 
+            var token = tokenService.gerarToken(request);
 
-        if (!usuarioService.validarSenha(request)){
-            return ResponseEntity.badRequest().body("Usuário ou senha inválido!");
+            return ResponseEntity.ok(token);
+        } catch (RuntimeException e) {
+            return  ResponseEntity.badRequest().body(e.getMessage());
         }
-
-
-        var token = tokenService.gerarToken(request);
-
-        return ResponseEntity.ok(token);
     }
 
 }

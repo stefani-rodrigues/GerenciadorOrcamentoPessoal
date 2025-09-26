@@ -18,7 +18,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
 
     @Autowired
-    private TokenService tokenservice;
+    private TokenService tokenService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -30,6 +30,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 || path.startsWith("/swagger-resources")
                 || path.startsWith("/v3/api-docs")
                 || path.startsWith("/webjars")
+                || path.startsWith("/")
                 || path.startsWith(("/swagger-ui"))){
 
             filterChain.doFilter(request, response);
@@ -41,7 +42,7 @@ public class JwtFilter extends OncePerRequestFilter {
         try {
             if (header != null && header.startsWith("Bearer ")) {
                 String token = header.replace("Bearer ", "");
-                var usuario = tokenservice.validarToken(token);
+                var usuario = tokenService.validarToken(token);
 
 
                 var autorizacao = new UsernamePasswordAuthenticationToken(

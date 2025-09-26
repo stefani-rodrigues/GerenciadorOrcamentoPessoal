@@ -26,6 +26,6 @@ public class Transacao   {
     private TipoTransacao tipo;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "usuario_id", nullable = true)
+    @JoinColumn(name = "usuarioId", nullable = true)
     private Usuario usuario;
 }
